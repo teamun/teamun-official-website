@@ -1,0 +1,302 @@
+<div class="custom-nav" id="headerDiv" ng-hide="pageStructureConfig.hideHeaderFlag">
+    <div class="container">
+        <div class="row">
+            <div class="custom-logo col-xs-12 col-sm-5 col-md-4">
+                <a href="/"><img src="../images/logo.png" class="img-responsive center-block" /></a>
+            </div>
+            <div class="hidden-xs col-sm-2 col-md-4"></div>
+            <div ng-if="isLogged !== true" class="custom-top-tool col-xs-12 col-sm-5 col-md-4">
+                <button type="button" class="btn btn-default custom-login" data-toggle="modal" data-target="#signinModal">登录</button>
+                <button type="button" class="btn btn-default custom-login" data-toggle="modal" data-target="#signupModal">注册</button>
+            </div>
+            <div ng-if="isLogged === true" class="custom-top-tool col-xs-12 col-sm-5 col-md-4">
+                <button type="button" class="btn hidden-xs btn-default custom-create-activity" ui-sref="root.activity-add"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;创建活动</button>
+
+
+                <!-- Split button -->
+                <div class="btn-group custom-login-info">
+                  <button type="button" class="btn btn-default"><span class="custom-grey">{{loginName}}</span></button>
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="" ng-click="logout();">登出</a></li>
+                  </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 登陆 Modal -->
+<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <form class="form-regist" name="signinForm" ng-submit="signin(user);">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content custom-login-window">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">账号登录</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" placeholder="手机号码" id="mobile" name="mobile" ng-model="user.mobile" ng-pattern="/^((13[0-9])|(15[^4,\D])|(18[0-9])|(17[0678])|(14[0-9]))\d{8}$/" ng-class="{'borderred':signinForm.mobile.$dirty && signinForm.mobile.$invalid && !signinForm.mobile.$focused,'borderwhite':!signinForm.mobile.$dirty || !signinForm.mobile.$invalid || signinForm.mobile.$focused}" required auto-fill-sync autofocus>
+                <div ng-if="signinForm.mobile.$dirty && signinForm.mobile.$invalid">
+                  <div ng-if="signinForm.mobile.$error.required">
+                    <small class="custom-error-report">请填写手机号码</small>
+                  </div>
+                  <div ng-if="signinForm.mobile.$error.pattern">
+                      <small class="custom-error-report">手机号码格式不正确</small>
+                  </div>
+                </div>
+                <input type="password" class="form-control" placeholder="密码" name="password" ng-model="user.password" required auto-fill-sync>
+                <div ng-if="signinForm.password.$dirty && signinForm.password.$invalid">
+                  <div ng-if="signinForm.password.$error.required">
+                    <small class="custom-error-report">请输入密码</small>
+                  </div>
+                </div>
+                <div ng-if="isPasswordError" ng-init="isPasswordError=false">
+                    <small class="custom-error-report">账号或密码错误</small>
+                </div>
+                <div class="custom-login-save-cookie">
+                    <input type="checkbox" id="login-checkbox">&nbsp;
+                    <label for="login-checkbox">保存登录状态</label>
+                </div>
+                <input type="submit" class="btn btn-default btn-lg btn-block custom-login-btn" ng-disabled="signinForm.$invalid && !isPasswordError" value="立即登录"/>
+                <div class="custom-login-tools">
+                    <a href="javascript:void(0);" data-toggle="modal" data-target="#findPassModal" ng-click="closeSigninModal();">忘记密码</a>
+                    <span class="pull-right">
+                      <a href="javascript:void(0);" data-toggle="modal" data-target="#signupModal" ng-click="closeSigninModal();">注册</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+  </form> 
+</div>
+
+<!-- 注册 Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <form class="form-regist" name="signupForm" ng-submit="signup(user);">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content custom-login-window">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">账号注册</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- 手机号码 -->
+                    <input type="text" class="form-control" placeholder="手机号码" id="mobile" name="mobile" ng-model="user.mobile" ng-pattern="/^((13[0-9])|(15[^4,\D])|(18[0-9])|(17[0678])|(14[0-9]))\d{8}$/" ensure-unique-mobile="mobile" ng-class="{'borderred':signupForm.mobile.$dirty && signupForm.mobile.$invalid && !signupForm.mobile.$focused,'borderwhite':!signupForm.mobile.$dirty || !signupForm.mobile.$invalid || signupForm.mobile.$focused}" required ng-focus />
+                    <div ng-if="signupForm.mobile.$dirty && signupForm.mobile.$invalid && !signupForm.mobile.$focused">
+                      <div ng-if="signupForm.mobile.$error.unique">
+                          <small class="custom-error-report">手机号码已被占用</small>
+                      </div>
+                      <div ng-if="signupForm.mobile.$error.pattern">
+                          <small class="custom-error-report">手机号码格式不正确</small>
+                      </div>
+                    </div>
+                    <!-- 密码 -->
+                    <input type="password" class="form-control" placeholder="密码" id="password" name="password" ng-model="user.password" ng-minlength="6" ng-maxlength="22" ng-pattern="/^[\@A-Za-z0-9\!\#\$\%\^\&\*\.\~]{6,22}$/" ng-class="{'borderred':signupForm.password.$dirty && signupForm.password.$invalid && !signupForm.password.$focused,'borderwhite':!signupForm.password.$dirty || !signupForm.password.$invalid || signupForm.password.$focused}" required ng-focus />
+                    <div ng-if="signupForm.password.$dirty && signupForm.password.$invalid && !signupForm.password.$focused">
+                      <div ng-if="signupForm.password.$error.minlength">
+                        <small class="custom-error-report">不能小于6个字符</small>
+                      </div>
+                      <div ng-if="signupForm.password.$error.maxlength">
+                        <small class="custom-error-report">不能大于22个字符</small>
+                      </div>
+                      <div ng-if="signupForm.password.$error.pattern">
+                        <small class="custom-error-report">长度6-22，数字或字母的组合，可以包含特殊字符</small>
+                      </div>
+                    </div>
+                    <!-- 验证码 -->
+                    <div class="custom-verify-code">
+                      <input type="text" class="form-control" placeholder="验证码" id="code" check-mobile-captcha="code" name="code" ng-model="user.code" ng-class="{'borderred':signupForm.code.$dirty && signupForm.code.$invalid && signupForm.code.$error.check && !signupForm.code.$focused}" required ng-focus />
+                      <input type="button" class="btn btn-default btn-lg custom-get-verify-code" value="获取验证码" onclick="countDown(this, 60);" ng-click="sendsmscode();" ng-disabled="signupForm.mobile.$invalid" ng-disabled="signupForm.mobile.$invalid"/>
+                      <div class="clearfix"></div>
+                      <div ng-if="signupForm.code.$dirty && signupForm.code.$invalid && signupForm.code.$error.check && !signupForm.code.$focused">
+                        <small class="custom-error-report">验证码错误</small>
+                      </div>
+                    </div>
+                    <!-- 邮箱 -->
+                    <input type="email" class="form-control" placeholder="邮箱地址" id="email" name="email" ng-model="user.email" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" ensure-unique-email="email" ng-class="{'borderred':signupForm.email.$dirty && signupForm.email.$invalid && !signupForm.email.$blur}" required ng-focus />
+                    <div ng-if="signupForm.email.$dirty && signupForm.email.$invalid && !signupForm.email.$blur" class="col-xs-12 form-div">
+                      <div ng-if="signupForm.email.$error.pattern">
+                        <p class="custom-error-report">邮箱格式不正确</p>
+                      </div>
+                      <div ng-if="signupForm.email.$error.unique">
+                        <p class="custom-error-report">邮箱已被占用</p>
+                      </div>
+                      <div ng-if="signupForm.email.$error.required">
+                        <p class="custom-error-report">请填写邮箱</p>
+                      </div>
+                    </div>
+                    <div class="custom-reg-check-terms">
+                        <input type="checkbox" id="checkFlag" name="checkFlag" ng-model="user.checkFlag" type="checkbox" class="p-checkbox" ng-checked="true">&nbsp;
+                        <label for="checkFlag">我同意<a href="javascript:void(0);" data-toggle="modal" data-target="#regDeclarationModal">《Teamun服务条款》</a></label>
+                    </div>
+                    <input type="submit" class="btn btn-default btn-lg btn-block custom-login-btn" ng-disabled="signupForm.$invalid || user.checkFlag == false" value="立即注册" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 密码找回 Modal -->
+<div class="modal fade" id="findPassModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <form class="form-regist" name="findPassForm" ng-submit="resetPassword(user);">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content custom-login-window">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">找回密码</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- 手机号码 -->
+                    <input type="text" class="form-control" placeholder="手机号码" id="mobile" name="mobile" ng-model="user.mobile" ng-pattern="/^((13[0-9])|(15[^4,\D])|(18[0-9])|(17[0678])|(14[0-9]))\d{8}$/" ng-class="{'borderred':findPassForm.mobile.$dirty && findPassForm.mobile.$invalid && !findPassForm.mobile.$focused,'borderwhite':!findPassForm.mobile.$dirty || !findPassForm.mobile.$invalid || findPassForm.mobile.$focused}" required ng-focus />
+                    <div ng-if="findPassForm.mobile.$dirty && findPassForm.mobile.$invalid && !findPassForm.mobile.$focused">
+                      <div ng-if="findPassForm.mobile.$error.pattern">
+                          <small class="custom-error-report">手机号码格式不正确</small>
+                      </div>
+                    </div>
+                    <!-- 验证码 -->
+                    <div class="custom-verify-code">
+                      <input type="text" class="form-control" placeholder="验证码" id="code" check-mobile-captcha="code" name="code" ng-model="user.code" ng-class="{'borderred':findPassForm.code.$dirty && findPassForm.code.$invalid && findPassForm.code.$error.check && !findPassForm.code.$focused}" required ng-focus />
+                      <input type="button" class="btn btn-default btn-lg custom-get-verify-code" value="获取验证码" onclick="countDown(this, 60);" ng-click="sendsmscode();" ng-disabled="findPassForm.mobile.$invalid" ng-disabled="findPassForm.mobile.$invalid"/>
+                      <div class="clearfix"></div>
+                      <div ng-if="findPassForm.code.$dirty && findPassForm.code.$invalid && findPassForm.code.$error.check && !findPassForm.code.$focused">
+                        <small class="custom-error-report">验证码错误</small>
+                      </div>
+                    </div>
+                    <!-- 密码 -->
+                    <input type="password" class="form-control" placeholder="输入新密码" id="password" name="password" ng-model="user.password" ng-minlength="6" ng-maxlength="22" ng-pattern="/^[\@A-Za-z0-9\!\#\$\%\^\&\*\.\~]{6,22}$/" ng-class="{'borderred':findPassForm.password.$dirty && findPassForm.password.$invalid && !findPassForm.password.$focused,'borderwhite':!findPassForm.password.$dirty || !findPassForm.password.$invalid || findPassForm.password.$focused}" required ng-focus />
+                    <div ng-if="findPassForm.password.$dirty && findPassForm.password.$invalid && !findPassForm.password.$focused">
+                      <div ng-if="findPassForm.password.$error.minlength">
+                        <small class="custom-error-report">不能小于6个字符</small>
+                      </div>
+                      <div ng-if="findPassForm.password.$error.maxlength">
+                        <small class="custom-error-report">不能大于22个字符</small>
+                      </div>
+                      <div ng-if="findPassForm.password.$error.pattern">
+                        <small class="custom-error-report">长度6-22，数字或字母的组合，可以包含特殊字符</small>
+                      </div>
+                    </div>
+                    <input type="submit" class="btn btn-default btn-lg btn-block custom-login-btn" ng-disabled="findPassForm.$invalid" value="提交" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<!-- reg Declaration Modal -->
+<div class="modal fade" id="regDeclarationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content custom-info-window">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="groupName">联盟运动保障计划</h4>
+            </div>
+            <form role="form" id="joinForm" ng-submit="joinAndUpdateUserInfo(user)">
+                <div class="modal-body">
+                    <div class="row"> 
+                      <div class="col-xs-12">
+                        <h4 class="text-center">
+                        TEAMUN全民健身运动大联盟平台服务协议 &nbsp;<small>（试行）</small>
+                        </h4> 
+                      </div>
+                      <div class="col-xs-12"><div class="custom-line"></div></div>
+                      <div class="col-xs-12 custom-margin-top custom-scroll">
+                      <p>
+                      <strong>总则</strong><br/><br/>
+
+                      平台全称“TEAMUN全民健身运动大联盟”，简称“TEAMUN运动联盟”域名为www.teamun.com。为了保护所有用户的权益及使用规范，制定本规则。
+                      本平台遵守国家和地方的网络信息安全各项规章制度，禁止一切违法行为。<br/>
+                      本平台开放目的是为运动爱好者提供一定的信息和知识，方便用户学习、娱乐、联系。对于未经确定的消息，包括但不限于连锁信件、传销方案、蛊惑性文章、敏感政治问题和未经许可的商业性广告以及一切包含潜在不确定风险的信息均禁止在本平台散布，如有违反，将予以删除、禁号等处罚。<br/>
+                      本平台用户仅代表用户个人，所发表言论仅代表用户的个人观点，由此或其他平台内交流方式引起的法律上或经济上的责任，本平台不予承担其中的任何责任。<br/>
+                      本规则主要目的是调节用户之间关系。本规则的制定遵循以下原则：<br/>
+                      ◇维护本平台的运行，促进平台的积极向上发展；<br/>
+                      ◇维护和保证本平台用户的正常健康的网上交流和信息发布的权益。<br/>
+                      TEAMUN运动联盟对本规则的全部内容及未尽之处拥有最终解释权。<br/><br/>
+
+                      <strong>关于本平台</strong><br/><br/>
+
+                      本平台的目的是为运动爱好者及从业者提供网络信息交流和发布的场所。<br/>
+                      本平台有权根据平台规则停止或终止向本平台使用者及用户提供本规则所提及的全部或部分服务。<br/>
+                      本平台文章或作品的著作权属于原作者。如转载信息，必须注明“转自：TEAMUN全民健身运动大联盟 www.teamun.com”。<br/>
+                      对于本平台用户发布信息涉及的侵权、违法行为，请自行与发布者本人联系，本平台对此不承担责任。<br/>
+                      对于本平台用户公开发布的信息，本平台有权随时修改或删除，并保留随时修改或删除本平台用户发布的信息而无须通知本平台用户的权利。<br/><br/>
+
+                      <strong>平台用户须知</strong><br/><br/>
+
+                      所有在本平台发言的用户，表明其已阅读并愿意遵守本平台现行的《平台服务协议》以及各项其他管理规定，并接受根据这些规定所实施的相关管理。<br/>
+                      本平台用户，即本平台使用者，是指通过网络进入本平台的个人、法人或其它组织。<br/>
+                      如用户对平台功能和使用有疑问，或对平台的线上和线下各方面工作有看法和建议，请到“投诉建议”给我们留言。<br/>
+                      当用户发布的内容引起任何投诉或法律纠纷时，平台的管理机构保留以任何方式向有关人员或部门公开该用户的身份(或任何我们所了解的关于该用户的资料)的权力。<br/><br/>
+
+                      <strong>本平台用户不得注册和使用以下帐号：</strong><br/><br/>
+
+                      含有不文明用语的；<br/>
+                      ◇攻击、影射、冒充各级国家领导或著名人物，可能产生不良影响的；<br/>
+                      ◇恶意攻击其他用户，恶意注册或使用与其他本平台其他用户相近的或侮辱性的帐号破<br/>
+                      ◇坏讨论秩序，侵害其他用户权益，或者可能引起重大误解的；<br/>
+                      ◇其他含有违反法律、行政法规规定和社会公德内容，可能产生不良后果的。<br/><br/>
+
+
+                      <strong>平台处罚办法</strong><br/><br/>
+
+                      根据《互联网电子公告服务管理规定》中的第九条:任何人不得在电子公告服务系统中发布含有下列内容之一的信息：<br/>
+                      ◇ 反对宪法所确定的基本原则的；<br/>
+                      ◇ 危害国家安全，泄露国家秘密，颠覆国家政权，破坏国家统一的；<br/>
+                      ◇ 损害国家荣誉和利益的；<br/>
+                      ◇ 煽动民族仇恨、民族歧视，破坏民族团结的；<br/>
+                      ◇ 破坏国家宗教政策，宣扬邪教和封建迷信的；<br/>
+                      ◇ 散布谣言，扰乱社会秩序，破坏社会稳定的；<br/>
+                      ◇ 散布淫秽、色情、赌博、暴力、凶杀、恐怖或者教唆犯罪的；<br/>
+                      ◇ 侮辱或者诽谤他人，侵害他人合法权益的；<br/>
+                      ◇ 与现行社会道德观念相冲突，可能导致违禁信息的讨论；<br/>
+                      ◇ 含有法律、行政法规禁止的其他内容的。<br/>
+                      我们将对违反上述规定的内容在不通知作者的前提下进行删除，对相应账号做出全平台永久停止权限处理。<br/>
+                      </p>
+                      </div> 
+                      <div class="col-xs-12 custom-btn-group text-center"> 
+                          <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-default custom-btn-grey">我接受</button>
+                      </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+function countDown(obj, second) {
+  // 如果秒数还是大于0，则表示倒计时还没结束
+  if (second >= 0) {
+    // 获取默认按钮上的文字
+    if (typeof buttonDefaultValue === 'undefined') {
+      buttonDefaultValue = obj.defaultValue;
+    }
+    // 按钮置为不可点击状态
+    obj.disabled = true;
+    // 按钮里的内容呈现倒计时状态
+    //obj.value = buttonDefaultValue + '(' + second + ')';
+    obj.value = second + "秒后重新发送";
+    obj.className = 'col-md-3 col-lg-3 white-button grey';
+    // 时间减一
+    second--;
+    // 一秒后重复执行
+    setTimeout(function() {
+      countDown(obj, second);
+    }, 1000);
+    // 否则，按钮重置为初始状态
+  } else {
+    // 按钮置未可点击状态
+    obj.disabled = false;
+    // 按钮里的内容恢复初始状态
+    obj.className = 'col-md-3 col-lg-3 white-button';
+    obj.value = buttonDefaultValue;
+  }
+}
+</script>
+

@@ -1,0 +1,74 @@
+<div class="row custom-title-wrap">
+  <div class="col-xs-12 custom-title-01">
+    <img src="../images/icon-02@3x.png" />
+  </div>
+ <!--  <div class="col-xs-12 col-sm-4 col-md-3 custom-title-01">
+    <img src="../images/icon-02.png" />
+  </div>
+  <div class="hidden-xs col-sm-8 col-md-9 custom-title-02"></div> -->
+</div>
+<div class="row">
+  <div class="col-xs-12 custom-filter-01">
+    <a class="btn btn-default custom-ghost-button" href="/">全部活动</a>
+    <a ng-show="selectCity" class="btn btn-default custom-ghost-button">{{selectCity}}</a>
+    <a class="btn btn-default custom-collapse-button pull-right" role="button" data-toggle="collapse" href="#collapseExample-01" aria-expanded="false" aria-controls="collapseExample-01">
+      <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="collapse col-xs-12 custom-filter-02" id="collapseExample-01">
+    <div class="well">
+      <button type="button" class="btn btn-default custom-ghost-button" ui-sref="root.activity-list({city: '北京'})">北京</button>
+      <button type="button" class="btn btn-default custom-ghost-button" ui-sref="root.activity-list({city: '上海'})">上海</button>
+      <button type="button" class="btn btn-default custom-ghost-button" ui-sref="root.activity-list({city: '长春'})">长春</button>
+      <button type="button" class="btn btn-default custom-ghost-button" ui-sref="root.activity-list({city: '乌鲁木齐'})">乌鲁木齐</button>
+      <button type="button" class="btn btn-default custom-ghost-button" ui-sref="root.activity-list({city: '广西'})">广西壮族自治区</button>
+      <button type="button" class="btn btn-default custom-ghost-button" ui-sref="root.activity-list({city: '南京'})">南京</button>
+      <button type="button" class="btn btn-default custom-ghost-button" ui-sref="root.activity-list({city: '广州'})">广州</button>
+    </div>
+  </div>
+</div>
+<div class="list-group">
+  <div class="custom-list-wrap-01 list-group-item" endless-scroll="item in items">
+    <div class="row custom-list-wrap-02 {{item.status !== 2 ? 'custom-list-disabled' : 'custom-list-active'}}" ui-sref="root.activity-detail({activity_id: item._id})">
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-5 col-sm-4 col-md-4 custom-activity-list-poster-wrap">
+            <img ng-show="item.poster" src="{{item.poster}}?imageMogr2/thumbnail/432x240!" class="img-responsive" />
+          </div>
+          <div class="col-xs-7 col-sm-6 col-md-6 custom-activity-list-content-wrap">
+            <h4>{{item.name}}</h4>
+            <div class="custom-activity-list-content hidden-xs">
+              <small>{{item.desc}}</small>
+            </div>
+            <div class="custom-activity-list-tips">
+              <span class="glyphicon glyphicon-time" aria-hidden="true"></span> <small>{{item.startTime | date: 'yyyy-MM-dd HH:mm'}}&nbsp;&nbsp;&nbsp;</small>
+              <span class="glyphicon glyphicon-map-marker hidden-xs" aria-hidden="true"></span> <small class="hidden-xs">{{item.city}}&nbsp;&nbsp;&nbsp;</small>
+              <span class="glyphicon glyphicon-user hidden-xs" aria-hidden="true"></span> <small class="hidden-xs">{{item.membersCount}}&nbsp;&nbsp;&nbsp;</small>
+              <small class="hidden-xs" am-time-ago="item.meta.createAt"></small>
+            </div>
+            <!-- <div class="custom-activity-list-create-time hidden-xs">
+                            <small></small>
+                        </div> -->
+          </div>
+          <div class="col-sm-2 col-md-2 custom-activity-list-tag-wrap hidden-xs">
+            <img src="{{item.organizer.logo}}?imageMogr2/thumbnail/150x65" class="img-responsive" />
+          </div>
+          <div>
+            <div class="custom-activity-list-state-01 hidden-xs" ng-show="item.status !== 2">
+              <img src="../images/activity-list-state-02.png" class="img-responsive" />
+            </div>
+            <div class="custom-activity-list-state-01 hidden-xs" ng-show="item.status === 2">
+              <img src="../images/activity-list-state-01.png" class="img-responsive" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p ng-show="loading" class="text-center custom-margin-top">
+    <img src="../images/buffering.gif" class="custom-buffering" />&nbsp;Loading...
+  </p>
+  <p ng-show="!hasmore" class="text-center custom-margin-top">
+    没有更多数据
+  </p>
+</div>

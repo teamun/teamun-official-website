@@ -1,0 +1,311 @@
+<div class="custom-activity-detail-content">
+  <div class="container">
+    <div class="row custom-activity-detail-content-wrap-01 {{activity.status !== 2 ? 'custom-activity-detail-content-disabled' : 'custom-activity-detail-content-active'}}">
+      <div class="col-xs-12 col-sm-9 custom-activity-detail-content-wrap-02">
+        <div class="row custom-activity-detail-content-wrap-03">
+          <div class="col-xs-12">
+            <h4>{{activity.name}}</h4>
+            <div class="custom-detail-poster">
+              <img ng-show="activity.poster" src="{{activity.poster}}?imageMogr2/thumbnail/831x465!" class="img-responsive" />
+              <img src="{{activity.organizer.logo}}?imageMogr2/thumbnail/150x100" class="img-responsive custom-detail-link-logo" />
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-2 custom-cell custom-title">
+            <span class="glyphicon glyphicon-time custom-detail-icon" aria-hidden="true"></span> &nbsp;开始时间 :
+          </div>
+          <div class="col-xs-8 col-sm-10 custom-cell">
+            {{activity.startTime | date: 'yyyy-MM-dd HH:mm'}}
+          </div>
+          <div class="col-xs-12 visible-xs-block">
+            <div class="custom-line"></div>
+          </div>
+          <!-- 为小屏添加分割线 -->
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block visible-sm-block"></div>
+          <div class="col-xs-4 col-sm-2 custom-cell custom-title">
+            <span class="glyphicon glyphicon-map-marker custom-detail-icon" aria-hidden="true"></span> &nbsp;活动地点 :
+          </div>
+          <div class="col-xs-8 col-sm-10 custom-cell">
+            {{activity.city}}&nbsp;&nbsp;<span>{{activity.location}}</span>
+            <!-- &nbsp;&nbsp;<span class="glyphicon glyphicon-map-marker custom-detail-icon" aria-hidden="true"></span> -->
+          </div>
+          <div class="col-xs-12 visible-xs-block">
+            <div class="custom-line"></div>
+          </div>
+          <!-- 为小屏添加分割线 -->
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block visible-sm-block"></div>
+          <!-- 
+		            <div class="hidden-xs col-sm-2 custom-cell"></div>
+		            <div class="col-xs-12 col-sm-10 custom-cell">
+			            
+		            </div> -->
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block visible-sm-block"></div>
+          <div class="col-xs-4 col-sm-2 custom-cell custom-title">
+            <span class="glyphicon glyphicon-bullhorn custom-detail-icon" aria-hidden="true"></span> &nbsp;运动项目 :
+          </div>
+          <div class="col-xs-8 col-sm-10 custom-cell">
+            {{activity.event.name}}
+          </div>
+          <div class="col-xs-12 visible-xs-block">
+            <div class="custom-line"></div>
+          </div>
+          <!-- 为小屏添加分割线 -->
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block visible-sm-block"></div>
+          <div class="col-xs-4 col-sm-2 custom-cell custom-title">
+            <span class="glyphicon glyphicon-flag custom-detail-icon" aria-hidden="true"></span> &nbsp;主办单位 :
+          </div>
+          <div class="col-xs-8 col-sm-10 custom-cell">
+            {{activity.organizer.name}}
+          </div>
+          <div class="col-xs-12 visible-xs-block">
+            <div class="custom-line"></div>
+          </div>
+          <!-- 为小屏添加分割线 -->
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block visible-sm-block"></div>
+          <div class="col-xs-4 col-sm-2 custom-cell custom-title">
+            <span class="glyphicon glyphicon-usd custom-detail-icon" aria-hidden="true"></span> &nbsp;报名费用 :
+          </div>
+          <div class="col-xs-8 visible-xs-block custom-cell"></div>
+          <div class="col-xs-12 col-sm-10 custom-cell">
+            <table class="table custom-table">
+              <tbody>
+                <tr ng-repeat="group in activity.activityGroups">
+                  <td width="35%">{{group.name}}</td>
+                  <td align="left" width="40%"><span class="custom-red">{{group.entryFee === 0 ? '免费' : group.entryFee}}</span> {{group.entryFee === 0 ? '' : '元/人'}}</td>
+                  <td>
+                    <div ng-if="isSignin">
+                      <div ng-if="group.status === 0">
+                        <a class="btn custom-btn-black btn-xs" disabled>未开始</a>
+                      </div>
+                      <div ng-if="group.status === 1">
+                        <div ng-show="!group.isJoin">
+                          <a ng-show="!group.isJoin && activity.isRealInfo || activity.isSafe || activity.isEmergencyContact" class="btn custom-btn-blue btn-xs" id="{{group._id}}" name="{{group.name}}" data-toggle="modal" data-target="#joinModal">报名</a>
+                          <a ng-show="!group.isJoin && !activity.isRealInfo && !activity.isSafe && !activity.isEmergencyContact" class="btn custom-btn-blue btn-xs" ng-click="join(group._id);">报名</a>
+                        </div>
+                        <a ng-show="group.isJoin" class="btn custom-btn-black btn-xs" ng-click="quit(group._id);">退出</a>
+                      </div>
+                      <div ng-if="group.status === 2">
+                        <a class="btn custom-btn-black btn-xs" disabled>已满</a>
+                      </div>
+                      <div ng-if="group.status === 3">
+                        <a class="btn custom-btn-black btn-xs" disabled>已结束</a>
+                      </div>
+                    </div>
+                    <div ng-if="!isSignin">
+                      <div>
+                        <a class="btn custom-btn-black btn-xs" data-toggle="modal" data-target="#signinModal">报名请登录</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block visible-sm-block"></div>
+          <div class="col-xs-4 col-sm-2 custom-cell custom-title">
+            <span class="glyphicon glyphicon-user custom-detail-icon" aria-hidden="true"></span> &nbsp;报名情况 :
+          </div>
+          <div class="col-xs-8 col-sm-10 custom-cell">
+            <div class="custom-signed-title">
+              <span class="custom-num">{{activity.membersCount}}</span> 人已报名
+            </div>
+          </div>
+          <!-- Add the extra clearfix for only the required viewport -->
+          <!-- <div class="clearfix visible-xs-block visible-sm-block"></div>
+		            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+			            活动概要
+		            </div>
+		            <div class="col-xs-12 col-sm-10 custom-cell custom-detail-descr">
+			            <p class="ng-binding" ng-bind-html=" activity.summary | nl2br ">
+					        New<br>Line
+					    </p>
+		            </div> -->
+          <div class="col-xs-12 visible-xs-block">
+            <div class="custom-line"></div>
+          </div>
+          <!-- 为小屏添加分割线 -->
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block visible-sm-block"></div>
+          <div class="col-xs-4 col-sm-2 custom-cell custom-title">
+            <span class="glyphicon glyphicon-pencil custom-detail-icon" aria-hidden="true"></span> &nbsp;活动描述 :
+          </div>
+          <div class="col-xs-8 visible-xs-block custom-cell"></div>
+          <div class="col-xs-12 col-sm-10 custom-cell custom-detail-descr">
+            <div ng-show="activity.headerImgs">
+              <img src="{{header}}" ng-repeat="header in activity.headerImgs" class="img-responsive">
+            </div>
+            <p class="ng-binding" ng-bind-html=" activity.desc | nl2br ">
+              New
+              <br>Line
+            </p>
+            <div ng-show="activity.footerImgs">
+              <img src="{{footer}}" ng-repeat="footer in activity.footerImgs" class="img-responsive">
+            </div>
+          </div>
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block visible-sm-block"></div>
+          <div class="hidden-xs col-sm-2 custom-cell"></div>
+          <div class="col-xs-12 col-sm-10 custom-cell">
+            <button ng-show="isCaptain" type="button" class="btn btn-default custom-btn-main-control" ui-sref="root.activity-edit({ activity_id: activity._id })">编辑</button>
+            <button ng-show="isCaptain" type="button" class="btn btn-default custom-btn-main-control" ui-sref="root.activity-group-members({ activity_id: activity._id })">成员管理</button>
+            <button ng-show="isCaptain && activity.status === 0" type="button" class="btn btn-default custom-btn-main-confirm" ng-click="publishGroup(activity);">发布</button>
+          </div>
+        </div>
+      </div>
+      <!-- <div sticky disabled-sticky="disabled" class="hidden-xs col-sm-3 custom-detail-qr-code-wrap-01"> -->
+      <div class="hidden-xs col-sm-3 custom-detail-qr-code-wrap-01">
+        <div class="custom-detail-qr-code-wrap-02">
+          <qr type-number="5" correction-level="'M'" size="200" text="qrurl" image="true"></qr>
+          <div class="custom-text"><span>微信扫一扫</span>&nbsp;分享活动</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Modal -->
+<div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom-edit-window">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="groupName"></h4>
+      </div>
+      <form role="form" id="joinForm" ng-submit="joinAndUpdateUserInfo(user)">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-3 custom-margin-bottom">
+              昵称
+            </div>
+            <div class="col-xs-12 col-sm-9 custom-margin-bottom">
+              {{user.nickname}}
+            </div>
+            <div class="col-xs-12 col-sm-3 custom-margin-bottom">
+              联系方式
+            </div>
+            <div class="col-xs-12 col-sm-9 custom-margin-bottom">
+              {{user.mobile}}
+            </div>
+            <div ng-show="activity.isRealInfo">
+              <div class="col-xs-12 col-sm-3">
+                真实姓名
+              </div>
+              <div class="col-xs-12 col-sm-9">
+                <input type="text" class="form-control" id="realname" name="realname" ng-model="user.realname" ng-required="activity.isRealInfo">
+              </div>
+              <div class="col-xs-12 col-sm-3">
+                身份证号码
+              </div>
+              <div class="col-xs-12 col-sm-9">
+                <input type="text" class="form-control" name="realname" ng-model="user.idcard" ng-required="activity.isRealInfo">
+              </div>
+            </div>
+            <div ng-show="activity.isEmergencyContact">
+              <div class="col-xs-12 col-sm-3">
+                紧急联系人姓名
+              </div>
+              <div class="col-xs-12 col-sm-9">
+                <input type="text" class="form-control" name="emergencyName" ng-model="user.emergencyName" ng-required="activity.isEmergencyContact">
+              </div>
+              <div class="col-xs-12 col-sm-3">
+                紧急联系人电话
+              </div>
+              <div class="col-xs-12 col-sm-9">
+                <input type="text" class="form-control" name="emergencyMobile" ng-model="user.emergencyMobile" ng-required="activity.isEmergencyContact">
+              </div>
+            </div>
+            <div ng-show="activity.isSafe">
+              <div class="col-xs-12 col-sm-3"></div>
+              <div class="col-xs-12 col-sm-9 custom-reg-check-terms">
+                <input type="checkbox" id="checkFlag" name="checkFlag" ng-model="user.checkFlag" type="checkbox" class="p-checkbox" ng-checked="true">&nbsp;
+                <label for="checkFlag">同意参与联盟运动保障计划，并免费领取，<a href="#" data-toggle="modal" data-target="#safeInfoModal">查看保险信息</a></label>
+              </div>
+            </div>
+            <input type="hidden" class="form-control" id="groupID" name="groupID" ng-model="groupID">
+            <div class="col-xs-12 col-sm-3"></div>
+            <div class="col-xs-12 col-sm-9 custom-btn-group">
+              <button type="submit" class="btn btn-default custom-btn-blue">报名</button> &nbsp;
+              <button type="reset" class="btn btn-default custom-btn-grey">重置</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- safe Info Modal -->
+<div class="modal fade" id="safeInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom-info-window">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="groupName">联盟运动保障计划</h4>
+      </div>
+      <form role="form" id="joinForm" ng-submit="joinAndUpdateUserInfo(user)">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-4 col-xs-offset-4 block-center"><img src="../images/metlife-logo.gif" class="img-responsive" /></div>
+            <div class="col-xs-12 custom-margin-top">
+              <table class="table custom-table table-bordered">
+                <thead>
+                  <tr>
+                    <th width="70%">保障内容</th>
+                    <th width="15%">保额</th>
+                    <th width="15%">时间</th>
+                  </tr>
+                  <tr>
+                    <td>水陆交通意外身故+10%残疾</td>
+                    <td>10万元</td>
+                    <td rowspan="4">
+                      <br/>
+                      <br/>90天</td>
+                  </tr>
+                  <tr>
+                    <td>航空意外身故+10%残疾</td>
+                    <td>10万元</td>
+                  </tr>
+                  <tr>
+                    <td>自驾（驾驶+乘坐）意外身故+10%残疾</td>
+                    <td>10万元</td>
+                  </tr>
+                  <tr>
+                    <td>意外住院医疗保险金</td>
+                    <td>10万元</td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="col-xs-12 custom-margin-top">
+              <div class="text-center custom-grey">— 参保须知 —</div>
+              <p class="custom-grey"><small>
+                        	1、可参保年龄，25-50（周岁）<br/>
+							2、每个用户只能领取一份赠险，如果您已投保过本险，你可以分享给您的亲朋好友领取保障；<br/>
+							3、保单生效后，保险公司会给您发送短信通知；<br/>
+							4、本页面内容仅供参考，保险合同内容以保险条款及电子保单所载内容为准；<br/>
+							5、本计划包含的产品包括：《水陆公共交通意外伤害保险》、《航空意外伤害保险》、《自驾车意外伤害保险》、《意外伤害住院医疗保险》。<br/>
+							6、保单生效后，可以到大都会人寿官网进行保单验真。</small>
+              </p>
+            </div>
+            <div class="col-xs-12 custom-btn-group text-center">
+              <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-default custom-btn-grey">我接受</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$('#joinModal').on('show.bs.modal', function(e) {
+  var $modal = $(this);
+  var groupId = e.relatedTarget.id;
+  var groupName = e.relatedTarget.name;
+  $("#groupID").val(groupId);
+  $("#groupName").empty();
+  $("#groupName").append("报名活动 - " + groupName);
+})
+</script>

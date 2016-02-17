@@ -1,0 +1,42 @@
+{
+  "name": "teamun-official-website",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "~1.2.0",
+    "angular-animate": "~1.2.0",
+    "angular-carousel": "~0.3.13",
+    "angular-cookies": "~1.2.0",
+    "angular-endless-scroll": "~0.1.0",
+    "angular-loading-bar": "~0.8.0",
+    "angular-moment": "~0.10.3",
+    "angular-qiniu-upload": "~0.0.4",
+    "angular-qr": "~0.2.0",
+    "angular-resource": "~1.2.0",
+    "angular-sanitize": "~1.2.0",
+    "angular-strap": "~2.1.1",
+    "angular-touch": "~1.2.0",
+    "angularjs-toaster": "~0.4.9",
+    "bootstrap": "~3.2.0",
+    "bootstrap-social": "~4.8.0",
+    "checklist-model": "~0.2.4",
+    "cropper": "~1.0.0",
+    "datatables": "~1.10.4",
+    "datatables-plugins": "~1.0.1",
+    "datatables-responsive": "~1.0.3",
+    "es5-shim": "~3.1.0",
+    "font-awesome": "~4.2.0",
+    "fontawesome": "~4.2.0",
+    "json3": "~3.3.1",
+    "moment": "~2.11.1",
+    "ng-file-upload": "~5.0.9",
+    "ng-file-upload-shim": "~5.0.9",
+    "ngSticky": "~1.8.7",
+    "textAngular": "~1.2.2",
+    "ui-router": "~0.2.11"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.2.0",
+    "angular-scenario": "~1.2.0"
+  },
+  "appPath": "app"
+}

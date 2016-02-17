@@ -1,0 +1,185 @@
+<!doctype html>
+<html class="no-js" lang="zh-cn" ng-app="teamunApp">
+  <head>
+    <meta charset="utf-8">
+    <title>TEAMUN 运动联盟</title>
+    <base href="/">
+    <meta name="fragment" content="!">
+    <meta name="keywords" content="TEAMUN, 运动联盟, 活动, 户外, 体育">
+    <meta name="description" content="TEAMUN 运动联盟 运动就是玩在一起">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-carousel/dist/angular-carousel.css" />
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css" />
+    <link rel="stylesheet" href="bower_components/angularjs-toaster/toaster.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" />
+    <link rel="stylesheet" href="bower_components/cropper/dist/cropper.css" />
+    <link rel="stylesheet" href="bower_components/datatables/media/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <script src="scripts/utils/modernizr.min.js"></script>
+
+    <!--[if lt IE 9]>
+      <script type='text/javascript'>
+        document.createElement('aboutsidebar');
+        document.createElement('helpsidebar');
+        document.createElement('slick');
+      </script>
+    <script type='text/javascript' src="scripts/utils/html5shiv.min.js"></script>
+    <script type='text/javascript' src="scripts/utils/respond.min.js"></script>
+    <script type='text/javascript' src="scripts/utils/json3.min.js"></script>
+    <link href="views/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+    <link href="scripts/utils/respond.proxy.gif" id="respond-redirect" rel="respond-redirect">
+    <script type='text/javascript' src="scripts/utils/respond.proxy.js"></script>
+
+    <style>
+        .slick-prev{
+            left:0;
+        }
+        .slick-next{
+            right:0;
+        }
+        .dis-none{
+            display:none;
+        }
+    </style>
+
+    <![endif]-->
+
+    <!--[if IE 8]>
+    <style type="text/css">
+        .result {
+            top: -42%;
+        }
+        .rotate {
+            line-height: 260px;
+        }
+    </style>
+    <![endif]-->
+
+    <!-- build:css(.tmp) styles/main.css -->
+    <!-- online css start -->
+    <!-- online css end -->
+    <!-- 重构 css start -->
+    <link rel="stylesheet" href="styles/custom.css" />
+    <link rel="stylesheet" href="styles/acute.select.css" />
+    <!-- 重构 css end -->
+
+    <!-- endbuild -->
+
+  </head>
+  <body>
+
+    <!-- Add your site or application content here -->
+    <section ui-view="header"></section>
+    <section ui-view autoscroll="true"></section>
+    <section ui-view="footer"></section>
+
+    <toaster-container toaster-options="{
+      'close-button': true,
+      'debug': false,
+      'position-class': 'toast-top-center',
+      'onclick': null,
+      'show-duration': '200',
+      'hide-duration': '1000',
+      'time-out': '5000',
+      'extended-timeOut': '1000',
+      'show-easing': 'swing',
+      'hide-easing': 'linear',
+      'show-method': 'fadeIn',
+      'hide-method': 'fadeOut'
+    }"></toaster-container>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-carousel/dist/angular-carousel.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-endless-scroll/dist/angular-endless-scroll.js"></script>
+    <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/angular-qiniu-upload/src/qupload.js"></script>
+    <script src="bower_components/qrcode/lib/qrcode.js"></script>
+    <script src="bower_components/angular-qr/src/angular-qr.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+    <script src="bower_components/angularjs-toaster/toaster.js"></script>
+    <script src="bower_components/checklist-model/checklist-model.js"></script>
+    <script src="bower_components/cropper/dist/cropper.js"></script>
+    <script src="bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+    <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+    <script src="bower_components/matchmedia/matchMedia.js"></script>
+    <script src="bower_components/ngSticky/lib/sticky.js"></script>
+    <script src="bower_components/textAngular/dist/textAngular.min.js"></script>
+    <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/i18n/angular-locale_zh-cn.js"></script>
+    <script src="scripts/i18n/moment/zh-cn.js"></script>
+    <script src="scripts/controllers/main/main-ctrl.js"></script>
+    <script src="scripts/controllers/header/header-ctrl.js"></script>
+
+    <script src="scripts/controllers/activities/activity-add-ctrl.js"></script>
+    <script src="scripts/controllers/activities/activity-detail-ctrl.js"></script>
+    <script src="scripts/controllers/activities/activity-edit-ctrl.js"></script>
+    <script src="scripts/controllers/activities/activity-add-group-ctrl.js"></script>
+    <script src="scripts/controllers/activities/activity-group-members-ctrl.js"></script>
+    <script src="scripts/controllers/official-actions/official-action-detail-ctrl.js"></script>
+    <script src="scripts/controllers/agreements/registration-agreement-ctrl.js"></script>
+
+    <script src="scripts/services/qiniu/qiniu-service.js"></script>
+    <script src="scripts/services/auth/authentication-service.js"></script>
+    <script src="scripts/services/auth/token-interceptor-service.js"></script>
+    <script src="scripts/services/signup/session-service.js"></script>
+    <script src="scripts/services/signup/signup-service.js"></script>
+    <script src="scripts/services/signin/signin-service.js"></script>
+    <script src="scripts/services/users/user-service.js"></script>
+    <script src="scripts/services/activities/activity-service.js"></script>
+    <script src="scripts/services/events/event-service.js"></script>
+    <script src="scripts/services/cities/city-service.js"></script>
+    <script src="scripts/services/organizers/organizer-service.js"></script>
+    <script src="scripts/services/hots/hot-service.js"></script>
+    <script src="scripts/services/official-actions/official-action-service.js"></script>
+    <script src="scripts/services/html5/browser-agent-service.js"></script>
+    <script src="scripts/services/html5/teamun-native-app-service.js"></script>
+    <script src="scripts/services/html5/page-control-service.js"></script>
+
+    <script src="scripts/directives/check-mobile-captcha.js"></script>
+    <script src="scripts/directives/ensure-unique-mobile.js"></script>
+    <script src="scripts/directives/ensure-unique-email.js"></script>
+    <script src="scripts/directives/baidumap.js"></script>
+
+    <script src="scripts/utils/acute.select.js"></script>
+    <!-- endbuild -->
+    <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=gd0GyxGUxSCoAbmdyQBhyhrZ"></script> -->
+    
+  </body>
+</html>

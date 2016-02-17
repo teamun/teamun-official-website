@@ -1,0 +1,164 @@
+<div class="{custom-activity-detail-content:!pageClassConfig.hideCustomActivityDetailContentClass}">
+  <div class="container">
+    <div class="row custom-activity-detail-content-wrap-01 {{action.status !== 2 ? 'custom-activity-detail-content-disabled' : 'custom-activity-detail-content-active'}}">
+      <div class="col-xs-12 col-sm-9 custom-activity-detail-content-wrap-02">
+        <div class="row custom-action-detail-content-wrap-03">
+          <div class="col-xs-12">
+            <h4>{{action.title}}</h4>
+            <div class="custom-detail-poster">
+              <img src="{{action.poster}}" class="img-responsive" />
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-2 custom-cell custom-title">
+            发布时间
+          </div>
+          <div class="col-xs-8 col-sm-10 custom-cell">
+            {{action.publishTime | date: 'yyyy-MM-dd HH:mm:ss'}}
+          </div>
+          <div class="col-xs-12 visible-xs-block">
+            <div class="custom-line"></div>
+          </div>
+          <!-- 为小屏添加分割线 -->
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block"></div>
+          <div class="col-xs-4 col-sm-2 custom-cell custom-title">
+            发起单位
+          </div>
+          <div class="col-xs-8 col-sm-10 custom-cell">
+            {{action.source}}
+          </div>
+          <div class="col-xs-12 visible-xs-block">
+            <div class="custom-line"></div>
+          </div>
+          <!-- 为小屏添加分割线 -->
+          <div ng-show="action.recruitGroups.length != 0">
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              报名情况
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <table class="table custom-table">
+                <tbody>
+                  <tr ng-repeat="group in action.recruitGroups">
+                    <td width="35%">{{group.name}}</td>
+                    <!-- <td align="left" width="40%"><span class="custom-red">{{group.users.length}}{{group.numLimit==0?'':'/' + group.numLimit}}</span>人</td> -->
+                    <td>
+                      <div ng-if="isSignin">
+                        <div ng-if="group.status === 0">
+                          <a class="btn custom-btn-black btn-xs" disabled>未开始</a>
+                        </div>
+                        <div ng-if="group.status === 1">
+                          <div ng-show="!group.isJoin">
+                            <a ng-show="!group.isJoin && action.isRealInfo" class="btn custom-btn-blue btn-xs" id="{{group._id}}" name="{{group.name}}" data-toggle="modal" data-target="#joinModal">报名</a>
+                            <a ng-show="!group.isJoin && !action.isRealInfo" class="btn custom-btn-blue btn-xs" ng-click="join(group._id);">报名</a>
+                          </div>
+                          <a ng-show="group.isJoin" class="btn custom-btn-black btn-xs" ng-click="quit(group._id);">退出</a>
+                        </div>
+                        <div ng-if="group.status === 2">
+                          <a class="btn custom-btn-black btn-xs" disabled>已满</a>
+                        </div>
+                        <div ng-if="group.status === 3">
+                          <a class="btn custom-btn-black btn-xs" disabled>已结束</a>
+                        </div>
+                      </div>
+                      <div ng-if="!isSignin">
+                        <div>
+                          <a ng-show="!isTeamunAppWebview" class="btn custom-btn-black btn-xs" data-toggle="modal" ng-click="" data-target="#signinModal">报名请登录</a>
+                          <a ng-show="isTeamunAppWebview" class="btn custom-btn-black btn-xs" ng-click="teamunAppLogin();">报名请登录</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              报名人数
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <div class="custom-signed-title">
+                <span class="custom-num">{{action.membersCount}}</span> 人已报名
+              </div>
+            </div>
+          </div>
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block"></div>
+          <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+            活动描述
+          </div>
+          <div class="col-xs-12 col-sm-10">
+            <div ta-bind ng-model="action.content" class="custom-cell custom-detail-descr"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hidden-xs col-sm-3 custom-detail-qr-code-wrap-01">
+        <div class="custom-detail-qr-code-wrap-02">
+          <qr type-number="5" correction-level="'M'" size="200" text="qrurl" image="true"></qr>
+          <div class="custom-text"><span>微信扫一扫</span>&nbsp;分享活动</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Modal -->
+<div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom-edit-window">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="groupName">报名信息</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <form role="form" id="joinForm" ng-submit="joinAndUpdateUserInfo(user)">
+            <div class="col-xs-12 col-md-2">
+              昵称
+            </div>
+            <div class="col-xs-12 col-md-10">
+              {{user.nickname}}
+            </div>
+            <div class="col-xs-12 col-md-2">
+              联系方式
+            </div>
+            <div class="col-xs-12 col-md-10">
+              {{user.mobile}}
+            </div>
+            <div ng-show="action.isRealInfo">
+              <div class="col-xs-12 col-md-2">
+                真实姓名
+              </div>
+              <div class="col-xs-12 col-md-10">
+                <input type="text" class="form-control" id="realname" name="realname" ng-model="user.realname" ng-required="action.isRealInfo">
+              </div>
+              <div class="col-xs-12 col-md-2">
+                身份证号码
+              </div>
+              <div class="col-xs-12 col-md-10">
+                <input type="text" class="form-control" name="realname" ng-model="user.idcard" ng-required="action.isRealInfo">
+              </div>
+            </div>
+            <input type="hidden" class="form-control" id="groupID" name="groupID" ng-model="groupID">
+            <div class="col-xs-12 col-md-2"></div>
+            <div class="col-xs-12 col-md-10 custom-btn-group">
+              <button type="submit" class="btn btn-default custom-btn-blue">报名</button> &nbsp;
+              <button type="reset" class="btn btn-default custom-btn-grey">重置</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$('#joinModal').on('show.bs.modal', function(e) {
+  var $modal = $(this);
+  var groupId = e.relatedTarget.id;
+  var groupName = e.relatedTarget.name;
+  $("#groupID").val(groupId);
+  $("#groupName").empty();
+  $("#groupName").append("报名活动 - " + groupName);
+})
+</script>

@@ -1,0 +1,45 @@
+<div class="row custom-title-wrap">
+  <div class="col-xs-12 custom-title-01">
+    <img src="../images/icon-01@3x.png" />
+  </div>
+  <!-- <div class="col-xs-12 col-sm-4 col-md-3 custom-title-01">
+    <img src="../images/icon-01.png" />
+  </div>
+  <div class="hidden-xs col-sm-8 col-md-9 custom-title-02"></div> -->
+</div>
+<div class="row custom-poster-recommend" ng-show="hots">
+  <div class="col-xs-12 col-sm-6 custom-poster-recommend-wrap-01">
+    <div class="custom-img-wrap" ng-show="hots[0]">
+      <div class="custom-title">{{hots[0].title}}</div>
+      <a href="{{hots[0].url}}"><img src="{{hots[0].poster}}?imageMogr2/thumbnail/564x306!" class="img-responsive" /></a>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 custom-poster-recommend-wrap-02">
+    <div class="row">
+      <div class="col-xs-6 custom-poster-02">
+        <div class="custom-img-wrap" ng-show="hots[1]">
+          <div class="custom-title">{{hots[1].title}}</div>
+          <a href="{{hots[1].url}}"><img src="{{hots[1].poster}}?imageMogr2/thumbnail/274x145!" class="img-responsive" /></a>
+        </div>
+      </div>
+      <div class="col-xs-6 custom-poster-03">
+        <div class="custom-img-wrap" ng-show="hots[2]">
+          <div class="custom-title">{{hots[2].title}}</div>
+          <a href="{{hots[2].url}}"><img src="{{hots[2].poster}}?imageMogr2/thumbnail/274x145!" class="img-responsive" /></a>
+        </div>
+      </div>
+      <div class="col-xs-6 custom-poster-04">
+        <div class="custom-img-wrap" ng-show="hots[3]">
+          <div class="custom-title">{{hots[3].title}}</div>
+          <a href="{{hots[3].url}}"><img src="{{hots[3].poster}}?imageMogr2/thumbnail/274x145!" class="img-responsive" /></a>
+        </div>
+      </div>
+      <div class="col-xs-6 custom-poster-05">
+        <div class="custom-img-wrap" ng-show="hots[4]">
+          <div class="custom-title">{{hots[4].title}}</div>
+          <a href="{{hots[4].url}}"><img src="{{hots[4].poster}}?imageMogr2/thumbnail/274x145!" class="img-responsive" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

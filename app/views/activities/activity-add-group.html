@@ -1,0 +1,229 @@
+<div class="custom-activity-create">
+  <div class="container">
+    <div class="row custom-activity-create-wrap-01">
+      <div class="col-xs-12 custom-activity-create-wrap-02">
+        <div class="row custom-activity-create-wrap-04 custom-well">
+          <div class="col-xs-7">
+            <div class="row">
+              <div class="col-xs-12">
+                <h4>{{activity.name}}</h4>
+              </div>
+              <div class="col-xs-12 col-sm-3 custom-cell custom-title">
+                活动时间
+              </div>
+              <div class="col-xs-12 col-sm-9 custom-cell">
+                {{activity.startTime | date: 'yyyy-MM-dd HH:mm:ss'}}
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-xs-12 col-sm-3 custom-cell custom-title">
+                活动地点
+              </div>
+              <div class="col-xs-12 col-sm-9 custom-cell">
+                {{activity.city}}
+                <br/> {{activity.location}}
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-xs-12 col-sm-3 custom-cell custom-title">
+                运动项目
+              </div>
+              <div class="col-xs-12 col-sm-9 custom-cell">
+                {{activity.event.name}}
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-xs-12 col-sm-3 custom-cell custom-title">
+                报名信息
+              </div>
+              <div class="col-xs-12 col-sm-9 custom-cell">
+                <label>
+                  <input type="checkbox" ng-checked="true" disabled="disabled"> 联系电话</label>
+                <label>
+                  <input type="checkbox" ng-checked="activity.isRealInfo ? 'true' : ''" disabled="disabled"> 真实资料</label>
+                <label>
+                  <input type="checkbox" ng-checked="activity.isEmergencyContact ? 'true' : ''" disabled="disabled"> 紧急联系人</label>
+                <label>
+                  <input type="checkbox" ng-checked="activity.isSafe ? 'true' : ''" disabled="disabled"> 联运动保险</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-5">
+            <div class="row">
+              <div class="col-xs-12 custom-detail-poster">
+                <img src="{{activity.poster}}" class="img-responsive" />
+                <img src="{{activity.organizer.logo}}?imageMogr2/thumbnail/200x100!" class="img-responsive custom-detail-link-logo" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row custom-activity-create-wrap-03">
+          <div class="col-xs-12 custom-cell">
+            <div class="custom-group-title">
+              <div class="pull-left">分组报名</div>
+              <div class="pull-right">
+                <a class="btn btn-default custom-add-button" role="button" data-toggle="modal" data-target="#activityGroupModal">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 活动项目
+                </a>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="col-xs-12 custom-cell">
+            <table class="table table-bordered custom-table">
+              <thead>
+                <tr>
+                  <th>活动项目</th>
+                  <th>上限人数</th>
+                  <th>活动费用</th>
+                  <th>开始报名时间</th>
+                  <th>截止报名时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="group in activityGroups">
+                  <td>{{group.name}}</td>
+                  <td>{{group.numLimit}}</td>
+                  <td>{{group.entryFee}}</td>
+                  <td>{{group.signTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{group.deadlineTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                  <td>
+                    <button type="button" class="btn btn-default custom-btn-grey btn-xs" ng-click="editGroup(group._id, $index);">编辑</button>
+                    <button type="button" class="btn btn-default custom-btn-grey btn-xs" ng-click="removeGroup(group);">删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Add the extra clearfix for only the required viewport -->
+          <div class="clearfix visible-xs-block"></div>
+          <div class="col-xs-12 custom-cell">
+            <button ng-show="activity.status === 0" type="button" class="btn btn-default custom-btn-main-confirm" ng-click="publishGroup(activity);">发布活动</button>
+            <button type="button" class="btn btn-default custom-btn-main-control" ui-sref="root.activity-detail({activity_id: activity._id})">完成</button>
+            <button type="button" class="btn btn-default custom-btn-main-control" ui-sref="root.activity-edit({ activity_id: activity._id })">上一步</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Modal -->
+<div class="modal fade" id="activityGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom-edit-window">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">新增活动分组</h4>
+      </div>
+      <form role="form" ng-submit="saveActivityGroup(activityGroup)">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-3">
+              活动项目
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" placeholder="个人报名" name="name" ng-model="activityGroup.name" required>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              报名上限
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" placeholder="默认0为不限制报名人数" name="numLimit" ng-model="activityGroup.numLimit" required>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              活动费用
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" placeholder="默认0为免费活动" name="entryFee" ng-model="activityGroup.entryFee" required>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              开始报名时间
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <div class="form-inline">
+                <input type="text" size="25" class="form-control" ng-model="signTime" data-max-date="{{deadlineTime}}" data-autoclose="1" placeholder="Date" bs-datepicker required>
+                <input type="text" size="22" class="form-control" ng-model="signTime" data-max-date="{{deadlineTime}}" data-time-format="HH:mm" data-autoclose="1" placeholder="Time" bs-timepicker>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              截至报名时间
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <div class="form-inline">
+                <input type="text" size="25" class="form-control" ng-model="deadlineTime" data-min-date="{{signTime}}" data-autoclose="1" placeholder="Date" bs-datepicker required>
+                <input type="text" size="22" class="form-control" ng-model="deadlineTime" data-min-date="{{signTime}}" data-time-format="HH:mm" data-autoclose="1" placeholder="Time" bs-timepicker>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-3"></div>
+            <div class="col-xs-12 col-sm-9 custom-btn-group">
+              <button type="submit" class="btn btn-default custom-btn-blue">保存</button> &nbsp;
+              <button type="reset" class="btn btn-default custom-btn-grey">重置</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Edit Modal -->
+<div class="modal fade" id="updateActivityGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom-edit-window">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">编辑活动分组</h4>
+      </div>
+      <form role="form" ng-submit="updateActivityGroup(activityGroup)">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-3">
+              活动项目
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" placeholder="个人报名" name="name" ng-model="activityGroup.name" required>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              报名上限
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" placeholder="默认0为不限制报名人数" name="numLimit" ng-model="activityGroup.numLimit" required>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              活动费用
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" placeholder="默认0为免费活动" name="entryFee" ng-model="activityGroup.entryFee" required>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              开始报名时间
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <div class="form-inline">
+                <input type="text" size="25" class="form-control" ng-model="signTime" data-autoclose="1" placeholder="Date" bs-datepicker required>
+                <input type="text" size="22" class="form-control" ng-model="signTime" data-time-format="HH:mm" data-autoclose="1" placeholder="Time" bs-timepicker>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              截至报名时间
+            </div>
+            <div class="col-xs-12 col-sm-9">
+              <div class="form-inline">
+                <input type="text" size="25" class="form-control" ng-model="deadlineTime" onmouseout="" data-autoclose="1" placeholder="Date" bs-datepicker required>
+                <input type="text" size="22" class="form-control" ng-model="deadlineTime" data-time-format="HH:mm" data-autoclose="1" placeholder="Time" bs-timepicker>
+              </div>
+            </div>
+            <!-- <div class="col-xs-12 col-sm-3"></div>
+                        <div class="col-xs-12 col-sm-9 custom-addition-group">
+                            <small>开始报名时间：<label><input type="checkbox" checked="cheched"> 默认为活动发布时间</label> </small>
+                            <br/>
+                            <small>截止报名时间：<label><input type="checkbox" checked="cheched"> 默认为活动开始时间</label> </small>
+                        </div> -->
+            <div class="col-xs-12 col-sm-3"></div>
+            <div class="col-xs-12 col-sm-9 custom-btn-group">
+              <button type="submit" class="btn btn-default custom-btn-blue">保存</button> &nbsp;
+              <button type="reset" class="btn btn-default custom-btn-grey">重置</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

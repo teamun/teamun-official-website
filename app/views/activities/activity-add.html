@@ -1,0 +1,297 @@
+<script type="text/javascript">
+// $(document).ready(function() {
+//  init();
+// });
+
+// function init() {
+//    if (navigator.geolocation) {
+//      navigator.geolocation.getCurrentPosition(showPosition);
+//    } else {
+//      x.innerHTML = "浏览器不支持定位.";
+//    }
+// }
+
+// function showPosition(position) {
+//    var lat = position.coords.latitude;
+//    var lng = position.coords.longitude;
+//    qq.maps.convertor.translate(new qq.maps.LatLng(lat, lng), 1, function(res) {
+//      latlng = res[0];
+
+//      var map = new qq.maps.Map(document.getElementById("container"), {
+//        zoomControl: false,
+//        center: latlng,
+//        zoom: 13
+//      });
+//      var marker = new qq.maps.Marker({
+//        map: map,
+//        position: latlng
+//      });
+
+//      var customDiv = document.createElement("img");
+//      customDiv.src = 'images/position.png';
+
+//      qq.maps.event.addListener(customDiv, 'click', function() {
+//        map.panTo(latlng);
+//        getAddr(map);
+//      });
+//      map.controls[qq.maps.ControlPosition.LEFT_BOTTOM].push(customDiv);
+
+//      //中心标记控件
+//      var middleControl = document.createElement("div");
+//      middleControl.style.left = document.body.scrollWidth / 2 - 580 + 'px';
+//      middleControl.style.top = "114px";
+//      middleControl.style.position = "relative";
+//      middleControl.style.width = "36px";
+//      middleControl.style.height = "36px";
+//      middleControl.style.zIndex = "100000";
+//      middleControl.innerHTML = '<img src="images/location.png" />';
+//      document.getElementById("container").appendChild(middleControl);
+
+//      var listener = qq.maps.event.addListener(map, 'dragend', function(event) {
+//        getAddr(map);
+//      });
+//    });
+
+// }
+
+// function getAddr(map) {
+//   var url = "http://apis.map.qq.com/ws/geocoder/v1/?location=" + map.getCenter() + "&key=MAEBZ-PNH3D-TGD47-PGG5E-Q3MLJ-3KFJ6&get_poi=1&output=jsonp";
+//   url = url.replace(/\s/g, "");
+//   $.getJSON(url + '&callback=?', function(data) {
+//       console.log(data.result.address_component.city);
+//       // var location = data.result.address_component.city + data.result.formatted_addresses.recommend;
+//       var location = data.result.formatted_addresses.recommend;
+//       $("#location").val(location);
+
+//   });
+// }
+
+function clickPosterUploader() {
+  document.getElementById('poster').click();
+}
+
+function clickHeaderUploader() {
+  document.getElementById('uploadheader').click();
+}
+
+function clickFooterUploader() {
+  document.getElementById('uploadfooter').click();
+}
+</script>
+<div class="custom-activity-create">
+  <div class="container">
+    <div class="row custom-activity-create-wrap-01">
+      <div class="col-xs-12 custom-activity-create-wrap-02">
+        <form role="form" ng-submit="saveActivity(activity)">
+          <div class="row custom-activity-create-wrap-03">
+            <div class="col-xs-12">
+              <h4>基本信息</h4>
+            </div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              活动名称<span class="custom-warning">*</span>
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <div class="form-inline">
+                <input type="text" size="40" class="form-control" placeholder="活动名称（4-24）" name="name" ng-model="activity.name" required>
+              </div>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              活动时间<span class="custom-warning">*</span>
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <div class="form-inline">
+                <input type="text" size="20" class="form-control" ng-model="startTime" data-min-date="{{yesterday}}" data-autoclose="1" placeholder="日期" bs-datepicker required>
+                <input type="text" size="15" class="form-control" ng-model="startTime" data-min-date="{{yesterday}}" data-time-format="HH:mm" data-autoclose="1" placeholder="时间" bs-timepicker required>
+              </div>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              活动地点<span class="custom-warning">*</span>
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <div class="form-inline">
+                <ac-select ac-model="data.selectedShape" ac-options="for shape in shapes" class="form-control"></ac-select>
+                <!-- <select class="form-control" ng-options="city as city.name for city in cities" ng-model="cityName" ></select> -->
+                <!-- <input type="text" class="form-control" size="20" placeholder="输入所在城市"> -->
+                <input type="text" class="form-control" size="40" placeholder="详细地址" name="location" id="location" ng-model="location" required>
+                <!-- <button type="button" class="btn btn-default custom-btn-grey" ng-click="area()">确定</button> -->
+              </div>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport 
+                                    <div class="clearfix visible-xs-block"></div>
+                                    <div class="col-xs-12 col-sm-2 custom-cell custom-title"></div>
+                                    <div class="col-xs-12 col-sm-10 custom-cell">
+                                        <baidu-map map-style="stt" map-options="ops" city="city" longitude="longitude1" latitude="latitude1"></baidu-map>
+                                        <div id="container" style="height:300px; width:300px;"></div>
+                                    </div>-->
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              运动项目<span class="custom-warning">*</span>
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <div class="form-inline">
+                <select name="event" class="form-control" ng-model="activity.event" required>
+                  <option value="">-- 请选择 --</option>
+                  <option ng-repeat="item in events" value="{{item._id}}">{{item.name}}</option>
+                </select>
+              </div>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              活动海报
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <div class="custom-add-poster custom-add-pic-wrap">
+                <a ng-show="!poster" href="javascript:void(0);" onclick="clickPosterUploader();"><img class="img-responsive img-rounded img-thumbnail" src="images/add-poster.png">
+                  <div class="progress" ng-show="selectPosterFiles[0].progress.p > 0">
+                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{selectPosterFiles[0].progress.p}}" aria-valuemin="0" aria-valuemax="100" style="width: {{selectPosterFiles[0].progress.p}}%"><span class="sr-only">{{selectPosterFiles[0].progress.p}}%</span></div>
+                  </div>
+                </a>
+                <input class="hide" id="poster" type="file" ngf-select ngf-change="uploadposter($files)" accept="image/jpg,image/jpeg,image/png,image/gif">
+                <img ng-show="poster" ng-src="{{poster}}" class="img-thumbnail" width="100%">
+                <input class="form-control" type="hidden" name="poster" ng-model="activity.poster" ng-init="activity.poster = poster">
+              </div>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              活动描述<span class="custom-warning">*</span>
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <textarea class="form-control" rows="5" name="desc" ng-model="activity.desc" required></textarea>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              插入图片
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <div class="row">
+                <div class="col-xs-12 custom-add-pic">
+                  <div ng-show="headerImgs !== null" class="custom-add-pic-wrap" ng-repeat="header in headerImgs">
+                    <img ng-src="{{header}}" class="img-thumbnail" width="100%">
+                  </div>
+                  <div class="custom-add-pic-wrap">
+                    <a ng-show="headerImgs.length < 3" href="javascript:void(0);" onclick="clickHeaderUploader();"><img class="img-responsive img-rounded img-thumbnail" src="images/add-top-pic.png">
+                      <div class="progress" ng-show="selectHeaderImgFiles[headerImgs.length].progress.p > 0">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{selectHeaderImgFiles[headerImgs.length].progress.p}}" aria-valuemin="0" aria-valuemax="100" style="width: {{selectHeaderImgFiles[headerImgs.length].progress.p}}%">
+                          <span class="sr-only">{{selectHeaderImgFiles[headerImgs.length].progress.p}}%</span>
+                        </div>
+                      </div>
+                    </a>
+                    <input class="hide" id="uploadheader" type="file" ngf-select ngf-change="uploadheader($files)" ngf-multiple="true" accept="image/jpg,image/jpeg,image/png,image/gif">
+                  </div>
+                </div>
+                <div class="col-xs-12 custom-add-pic custom-margin-top">
+                  <div ng-show="footerImgs !== null" class="custom-add-pic-wrap" ng-repeat="header in footerImgs">
+                    <img ng-src="{{header}}" class="img-thumbnail" width="100%">
+                  </div>
+                  <div class="custom-add-pic-wrap">
+                    <a ng-show="footerImgs.length < 3 " href="javascript:void(0);" onclick="clickFooterUploader();"><img class="img-responsive img-rounded img-thumbnail" src="images/add-bottom-pic.png">
+                      <div class="progress" ng-show="selectFooterImgFiles[footerImgs.length].progress.p > 0">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{selectFooterImgFiles[footerImgs.length].progress.p}}" aria-valuemin="0" aria-valuemax="100" style="width: {{selectFooterImgFiles[footerImgs.length].progress.p}}%"><span class="sr-only">{{selectFooterImgFiles[footerImgs.length].progress.p}}%</span></div>
+                      </div>
+                    </a>
+                    <input class="hide" id="uploadfooter" type="file" ngf-select ngf-change="uploadfooter($files)" ngf-multiple="true" accept="image/jpg,image/jpeg,image/png,image/gif">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <!-- <div class="clearfix visible-xs-block"></div>
+                                    <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+                                      活动概要
+                                    </div>
+                                    <div class="col-xs-12 col-sm-10 custom-cell">
+                                      <textarea class="form-control" rows="3" name="summary" ng-model="activity.summary"></textarea>
+                                    </div>
+                                    <div class="col-xs-12">&nbsp;</div> -->
+            <div class="col-xs-12">
+              <div class="custom-line"></div>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12 col-sm-2 custom-cell">
+              <h4>报名信息</h4>
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <div class="custom-check-area">
+                <label>
+                  <input type="checkbox" checked="cheched" disabled="disabled"> <strong>联系电话</strong>
+                  <br/><small>用户昵称<br/></small><small>手机号码</small>
+                </label>
+              </div>
+              <div class="custom-check-area">
+                <label>
+                  <input type="checkbox" name="isEmergencyContact" id="isEmergencyContact1" value="true" ng-model="isEmergencyContact" ng-value="true">
+                  <strong>紧急联系人</strong>
+                  <br/><small>紧急联系人称呼<br/></small><small>紧急联系人联系电话</small>
+                </label>
+              </div>
+              <div class="custom-check-area">
+                <label>
+                  <input type="checkbox" name="isRealInfo" id="isRealInfo1" value=true ng-model="isRealInfo" ng-value="true">
+                  <strong>真实资料</strong>
+                  <br/><small>真实姓名<br/></small><small>份证号码</small>
+                </label>
+              </div>
+              <div class="custom-check-area">
+                <label>
+                  <input type="checkbox" name="isSafe" id="isSafe1" value="true" ng-model="isSafe" ng-value="true">
+                  <strong>运动保险</strong>
+                  <br/><small>运动联盟提供保险<br/><br/></small>
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">
+              <div class="custom-line"></div>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">
+              <h4>其他设置</h4>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              主办单位<span class="custom-warning">*</span>
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <div class="form-inline">
+                <select class="form-control" ng-model="activity.organizer" data-ng-options="organizer as organizer.name for organizer in organizers" required>
+                  <option value="">-- 请选择 --</option>
+                </select>
+              </div>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell custom-title">
+              隐私设置
+            </div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <label>
+                <input type="radio" name="type" id="publicActivity" ng-model="type" value="0"> 公开活动
+              </label> &nbsp;
+              <span class="custom-grey">您的活动审核后才会公开发布在Teamun运动联盟，在此之前，你也可以正常使用，邀请他人报名。</span>
+              <br/>
+              <label>
+                <input type="radio" name="type" id="privateActivity" ng-model="type" value="1"> 私密活动
+              </label> &nbsp;
+              <span class="custom-grey">您可以在“个人中心”-“我的活动”查看您的活动及报名情况。</span>
+            </div>
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-xs-12 col-sm-2 custom-cell"></div>
+            <div class="col-xs-12 col-sm-10 custom-cell">
+              <button type="submit" class="btn btn-default btn-lg custom-btn-main-confirm">下一步</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

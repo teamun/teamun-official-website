@@ -1,0 +1,40 @@
+<div class="custom-activity-group-members">
+  <div class="container">
+    <div class="row custom-activity-group-members-wrap-01">
+      <div class="col-xs-12 custom-activity-group-members-wrap-02">
+        <div class="row custom-activity-group-members-wrap-03">
+          <div class="col-xs-12">
+            <strong>当前报名人数：<span class="custom-num">{{groupmembers.length}}</span> 人</strong>
+          </div>
+          <div class="col-xs-12 custom-margin-top">
+            <table class="table custom-table table-bordered">
+              <thead>
+                <tr>
+                  <th>昵称</th>
+                  <th>联系方式</th>
+                  <th>真实姓名</th>
+                  <th>身份证号</th>
+                  <th>运动保障</th>
+                  <th>报名分组</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="group in groupmembers">
+                  <td>{{group.nickname}}</td>
+                  <td>{{group.mobile}}</td>
+                  <td>{{group.realname}}</td>
+                  <td>{{group.idcard}}</td>
+                  <td>{{group.isSafe ? '是' : '否'}}</td>
+                  <td>{{$index === 0 ? '领队' : group.groupName}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-xs-12 ustom-btn-group custom-margin-top">
+            <button type="button" class="btn btn-default custom-btn-black" ui-sref="root.activity-detail({activity_id: groupmembers[0].activityId})">返回</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
