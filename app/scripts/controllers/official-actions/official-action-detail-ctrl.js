@@ -17,13 +17,12 @@ teamunApp.controller('OfficialActionDetailCtrl',
     toaster.pop('error', error.data.msg);
   });
 
-  //如果浏览器是teamun app webview
-  if(BrowserAgentService.isTeamunAppWebView) {
-    $scope.isTeamunAppWebview = true;
+  $scope.isSignin = false;
 
-    if(!SessionService.get("mobile")){
-      var onlineUser = TeamunNativeAppService.invokeNativeFunction('jsTakeToken');
-
+  $scope.isTeamunAppWebview = BrowserAgentService.isTeamunAppWebView;
+  //如果浏览器是teamun app webview并且未登录
+  if($scope.isTeamunAppWebview && !SessionService.get("mobile")) {
+    TeamunNativeAppService.invokeNativeFunction('jsTakeToken').then(function(onlineUser){
       if(typeof onlineUser !== 'undefined'){
         $rootScope.isLogged = true;
         AuthenticationService.isLogged = true;
@@ -31,26 +30,40 @@ teamunApp.controller('OfficialActionDetailCtrl',
         SessionService.set('mobile', onlineUser.mobile);
         localStorage.token = onlineUser.token;
         $rootScope.loginName = onlineUser.nickname;
-      }
-    }
-  }
+        $scope.isSignin = true;
 
-  $scope.isSignin = true;
-  if(SessionService.get("mobile")) {
-    UserService.user.get({
-      mobile: SessionService.get("mobile")
-    }, function(result) {
-      if (result.ret === 1) {
-        $scope.user = result.data.user;
-      } else {
-        toaster.pop('error', result.msg);
-      }
-    }, function(error) {
-      toaster.pop('error', error.data.msg);
+        UserService.user.get({
+            mobile: SessionService.get("mobile")
+          }, function(result) {
+            if (result.ret === 1) {
+              $scope.user = result.data.user;
+            } else {
+              toaster.pop('error', result.msg);
+            }
+          }, function(error) {
+            toaster.pop('error', error.data.msg);
+        });
+      };
+      
+    },function(error){
+      alert('页面加载异常，请刷新页面重试！');
     });
-  } else {
-    $scope.isSignin = false;
-  }
+  }else{
+    if(SessionService.get("mobile")) {
+      $scope.isSignin = true;
+      UserService.user.get({
+        mobile: SessionService.get("mobile")
+      }, function(result) {
+        if (result.ret === 1) {
+          $scope.user = result.data.user;
+        } else {
+          toaster.pop('error', result.msg);
+        }
+      }, function(error) {
+        toaster.pop('error', error.data.msg);
+      });
+    };
+  };
 
   $scope.join = function(groupId) {
     OfficialActionService.join.update({
